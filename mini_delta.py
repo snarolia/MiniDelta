@@ -12,14 +12,27 @@ class MiniDeltaTable:
         self.table_path=table_path
         self.log_path=os.path.join(table_path, "_delta_log")
         os.makedirs(self.log_path, exist_ok=True)
-    
+
     ## Gets the list of existing logs and returns the name/number of next log (used for version controling)
     def _get_next_version(self):
         existing_logs=sorted([int(f.replace(".json", "")) for f in os.listdir(self.log_path) if f.endswith(".json")])
         return (existing_logs[-1]+1) if existing_logs else 0 ## Returns the number/name of next log to be created
     
-    def insert(self, df:pd.DataFrame):
+    def insert(self, df:pd.DataFrame, strict_schema:bool=False):
         version=self._get_next_version()
+
+        if strict_schema and version>0:
+            previous_metadata_file=os.path.join(self.log_path, f"{version-1}.json")
+            with open(previous_metadata_file, "r") as metadatafile:
+                previous_metadata=json.load(metadatafile)
+            previous_schema=set(previous_metadata["schema"])
+            current_schema=set(df.columns)
+
+            if previous_schema!=current_schema:
+                raise ValueError(f"Schema mismatch between current and previous files \n " \
+                f"Missing Columns : {previous_schema-current_schema} \n"\
+                    f"Additional Columns : {current_schema-previous_schema}")
+
         version_file=f"data_v_{version}.parquet"
         df.to_parquet(os.path.join(self.table_path, version_file), index=False)
 
