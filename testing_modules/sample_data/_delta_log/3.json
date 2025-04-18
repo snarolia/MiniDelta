@@ -1,0 +1,11 @@
+{
+  "version": 3,
+  "file": "data_v_3.parquet",
+  "number_of_rows": 3,
+  "schema": [
+    "name",
+    "id",
+    "vigilante_status"
+  ],
+  "timestamp": "2025-04-18T14:02:37.587566"
+}

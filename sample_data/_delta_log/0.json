@@ -1,0 +1,10 @@
+{
+  "version": 0,
+  "file": "data_v_0.parquet",
+  "number_of_rows": 1,
+  "schema": [
+    "name",
+    "id"
+  ],
+  "timestamp": "2025-04-16T22:54:37.892748"
+}
