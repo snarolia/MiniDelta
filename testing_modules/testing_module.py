@@ -1,8 +1,31 @@
-from mini_delta import MiniDeltaTable
+#from mini_delta import MiniDeltaTable
 import pandas as pd
+import random
 
-delta_table=MiniDeltaTable(table_path="/Users/siddharthnarolia/Projects/Github/MiniDelta/testing_modules/sample_data")
+#delta_table=MiniDeltaTable(table_path="/Users/siddharthnarolia/Projects/Github/MiniDelta/testing_modules/sample_data")
 
+
+first_names=["John", "Jane", "Alice", "Bob", "Mike", "Sara"]
+last_names=["Smith", "Johnson", "Williams", "Brown", "Jones", "Davis"]
+
+data=[]
+
+for i in range(10):
+    first=random.choice(first_names)
+    last=random.choice(last_names)
+    name=f"{first} {last}"
+    age=random.randint(18,60)
+    email=f"{first.lower()}.{last.lower()}@testmail.com"
+
+    data.append({
+        "name":name,
+        "age":age,
+        "email":email
+    })
+df=pd.DataFrame(data)
+print(df)
+
+df.to_csv("/Users/siddharthnarolia/Projects/Github/MiniDelta/sample_data/csv/sample_data.csv")
 
 """Testing Insert of New Data"""
 # df_1=pd.DataFrame({
